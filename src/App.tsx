@@ -4,6 +4,8 @@ import { DEFAULT_REQUEST, PRESETS } from './features/http-lab/examples/presets';
 import { WIKI_FIELDS } from './features/wiki/content/fields';
 import type { LabRequest, LabResponse, OutputFormat } from './features/http-lab/models/request';
 import { APP_DISPLAY_VERSION } from './shared/constants/appVersion';
+import { LANGUAGES } from './features/language/languages';
+import { LanguageIcon } from './features/language/LanguageIcon';
 
 type Mode = 'beginner' | 'pro';
 type Theme = 'light' | 'dark';
@@ -21,6 +23,9 @@ export default function App() {
   const [response, setResponse] = useState<LabResponse | null>(null);
   const [audit, setAudit] = useState<ReturnType<typeof ApiLabCore.audit> | null>(null);
   const [message, setMessage] = useState('');
+  const [languageOpen, setLanguageOpen] = useState(false);
+  const [languageNotice, setLanguageNotice] = useState('');
+  const [highlightedLanguage, setHighlightedLanguage] = useState<string | null>(null);
   // A mesma base permanece na memória da aba para demonstrar o ciclo CRUD.
   const database = useRef(ApiLabCore.newDatabase());
   const generated = ApiLabCore.generate(request);
@@ -42,6 +47,13 @@ export default function App() {
     const next = mode === 'beginner' ? 'pro' : 'beginner';
     setMode(next); localStorage.setItem(STORAGE_KEYS.mode, next);
   }
+  function chooseLanguage(language: (typeof LANGUAGES)[number]) {
+    // Idiomas não publicados mostram um aviso; o conteúdo permanece em pt-BR.
+    document.documentElement.lang = 'pt-BR';
+    setHighlightedLanguage(language.available ? null : language.code);
+    setLanguageNotice(language.available ? '' : language.notice);
+    if (language.available) setLanguageOpen(false);
+  }
   async function copyOutput() {
     if (!generated.ok) return;
     try { await navigator.clipboard.writeText(generated.output); setMessage('Código copiado.'); }
@@ -59,7 +71,7 @@ export default function App() {
     <header className="topbar">
       <button className="menu-button" aria-label={menuOpen ? 'Fechar menu' : 'Abrir menu'} aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}>☰</button>
       <div className="brand"><strong>API Lab</strong><span>Faculdade · {APP_DISPLAY_VERSION}</span></div>
-      <div className="top-actions"><button onClick={changeMode}>Modo {mode === 'beginner' ? 'iniciante' : 'profissional'}</button><button onClick={changeTheme} aria-label="Alternar tema">{theme === 'light' ? '☾ Escuro' : '☀ Claro'}</button></div>
+      <div className="top-actions"><button onClick={changeMode}>Modo {mode === 'beginner' ? 'iniciante' : 'profissional'}</button><div className="language-control"><button className="language-trigger" type="button" aria-label="Escolher idioma" aria-expanded={languageOpen} aria-controls="language-options" onClick={() => setLanguageOpen(open => !open)}><LanguageIcon /><span className="language-current">🇧🇷 PT</span></button>{languageOpen && <div id="language-options" className="language-popover"><strong>Idioma da página</strong><p>As traduções estão em desenvolvimento.</p><div className="language-grid">{LANGUAGES.map(language => <button type="button" key={language.code} className={`language-card ${language.available ? 'available' : 'upcoming'} ${highlightedLanguage === language.code ? 'selected-upcoming' : ''}`} onClick={() => chooseLanguage(language)} aria-current={language.available ? 'true' : undefined}><span aria-hidden="true">{language.flag}</span><span>{language.name}</span><small>{language.available ? 'Atual' : 'Em breve'}</small></button>)}</div>{languageNotice && <p className="language-notice" role="alert">{languageNotice}</p>}</div>}</div><button onClick={changeTheme} aria-label="Alternar tema">{theme === 'light' ? '☾ Escuro' : '☀ Claro'}</button></div>
     </header>
     <div className="shell">
       <nav className={`sidebar ${menuOpen ? 'open' : ''}`} aria-label="Seções" onClick={() => setMenuOpen(false)}>
