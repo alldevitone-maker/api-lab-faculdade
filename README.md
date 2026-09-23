@@ -1,28 +1,35 @@
 # API Lab Faculdade
 
-**Versão v0.0.1**
+Laboratório visual para aprender APIs HTTP. A versão exibida na página vem de `package.json`, a única fonte de versão do projeto.
 
-Laboratório interativo para estudar requisições HTTP, endpoints, parâmetros, headers, JSON, Xano e FlutterFlow. Funciona como página estática, sem backend.
+Acesse [o laboratório publicado](https://alldevitone-maker.github.io/api-lab-faculdade/). A página funciona pelo link, sem instalar nada. O laboratório simula respostas em memória: não envia chamadas para a URL informada e não valida credenciais reais. Evite inserir tokens reais. A [versão anterior](https://alldevitone-maker.github.io/api-lab-faculdade/legacy.html) preserva as demais atividades originais durante a migração.
 
-## Abrir
+## Desenvolvimento
 
-Acesse a página publicada no GitHub Pages ou abra [`index.html`](index.html) no navegador. Não é preciso instalar dependências.
+Requer Node.js 22 ou mais recente.
 
-## Experimente
+```bash
+npm ci
+npm run dev
+npm run lint
+npm run test
+npm run build
+npm run test:e2e
+```
 
-1. Escolha um método HTTP. O construtor oferece GET, POST, PUT, PATCH, DELETE, HEAD e OPTIONS.
-2. Deixe o recurso `alunos` e clique em **Simular resposta** para listar os registros de exemplo.
-3. Digite o ID `42` para consultar um aluno. Deixe o ID vazio para listar ou criar.
-4. Use o botão **Criar** e simule para cadastrar um registro. Depois consulte o ID retornado.
-5. Clique nos ícones `?` ao lado dos campos para ver exemplos de preenchimento.
-6. No fim da página, execute o autoteste.
+O teste de navegador requer `npx playwright install chromium` na primeira execução. A auditoria também pode ser executada na própria página.
 
-Os registros são fictícios e ficam apenas na memória da aba. Recarregar a página restaura os dados iniciais (IDs 1, 2 e 42). A página não envia requisições à Base URL digitada e não valida credenciais reais. Os exemplos de cURL e `fetch()` servem para estudo; adapte URLs e autenticação antes de usá-los com uma API real. Não insira tokens reais no laboratório.
+## Organização
 
-## Verificação da v0.0.1
+- `src/features/http-lab/services/core.js`: motor didático e auditoria migrados da página original sem alterar a lógica.
+- `src/features/http-lab/models/request.ts`: contratos para entradas e respostas.
+- `src/features/http-lab/examples/presets.ts`: exemplos de preenchimento.
+- `src/features/wiki/content/fields.ts`: explicação de cada campo e termo.
+- `src/App.tsx`: formulário, resultados e navegação.
+- `public/legacy.html`: exercícios e explicações da página original.
 
-O autoteste embarcado cobre 1.049 combinações e casos definidos, incluindo sete métodos, três formatos de saída, validações e operações em sequência. A aprovação desse teste valida a lógica local coberta; não substitui testes contra uma API real ou em diferentes navegadores.
+Para mudar a versão, altere **somente** `version` em `package.json` e execute `npm install --package-lock-only`. `src/shared/constants/appVersion.ts` importa esse valor e todas as telas o reutilizam. O README não armazena uma cópia da versão.
 
-## Publicação no GitHub Pages
+## Publicação
 
-Publique os arquivos na raiz da branch `main`. Em **Settings → Pages**, selecione **Deploy from a branch**, branch `main` e pasta `/ (root)`. O arquivo `index.html` será a página inicial.
+O GitHub Actions executa lint, testes, verificação de versão e build antes de publicar `dist` no GitHub Pages. Nas configurações de Pages, escolha **GitHub Actions** como origem. O Vite ajusta o caminho base durante o workflow.
