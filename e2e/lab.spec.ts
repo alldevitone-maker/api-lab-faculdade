@@ -15,3 +15,14 @@ test('o tema e a navegação funcionam no celular', async ({ page }) => {
   await page.getByRole('button', { name: 'Abrir menu' }).click();
   await expect(page.getByRole('navigation', { name: 'Seções' })).toBeVisible();
 });
+
+test('idioma em desenvolvimento avisa e mantém o português', async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 800 });
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Escolher idioma' }).click();
+  await page.getByRole('button', { name: /English/ }).click();
+  await expect(page.getByRole('alert').filter({ hasText: 'Language under development' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Entenda uma API, campo por campo.' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Escolher idioma' })).toContainText('PT');
+  await expect(page.locator('html')).toHaveAttribute('lang', 'pt-BR');
+});
