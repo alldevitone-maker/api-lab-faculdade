@@ -4,6 +4,12 @@ Laboratório visual para aprender APIs HTTP. A versão exibida na página vem de
 
 Acesse [o laboratório publicado](https://alldevitone-maker.github.io/api-lab-faculdade/). A página funciona pelo link, sem instalar nada. O laboratório simula respostas em memória: não envia chamadas para a URL informada e não valida credenciais reais. Evite inserir tokens reais. A [versão anterior](https://alldevitone-maker.github.io/api-lab-faculdade/legacy.html) preserva as demais atividades originais durante a migração.
 
+## Building with AI in Public
+
+Este repositório também registra uma parte da evolução pública do projeto e do processo de construção com LLMs e IA.
+
+Leia o diário público: [Building with AI in Public](./BUILDING_WITH_AI.md)
+
 ## Desenvolvimento
 
 Requer Node.js 22 ou mais recente.
@@ -21,12 +27,12 @@ O teste de navegador requer `npx playwright install chromium` na primeira execu�
 
 ## Organização
 
-- `src/features/http-lab/services/core.js`: motor didático e auditoria migrados da página original sem alterar a lógica.
-- `src/features/http-lab/models/request.ts`: contratos para entradas e respostas.
-- `src/features/http-lab/examples/presets.ts`: exemplos de preenchimento.
-- `src/features/wiki/content/fields.ts`: explicação de cada campo e termo.
-- `src/App.tsx`: formulário, resultados e navegação.
-- `public/legacy.html`: exercícios e explicações da página original.
+* `src/features/http-lab/services/core.js`: motor didático e auditoria migrados da página original sem alterar a lógica.
+* `src/features/http-lab/models/request.ts`: contratos para entradas e respostas.
+* `src/features/http-lab/examples/presets.ts`: exemplos de preenchimento.
+* `src/features/wiki/content/fields.ts`: explicação de cada campo e termo.
+* `src/App.tsx`: formulário, resultados e navegação.
+* `public/legacy.html`: exercícios e explicações da página original.
 
 Para mudar a versão, altere **somente** `version` em `package.json` e execute `npm install --package-lock-only`. `src/shared/constants/appVersion.ts` importa esse valor e todas as telas o reutilizam. O README não armazena uma cópia da versão.
 
