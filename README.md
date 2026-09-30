@@ -8,6 +8,8 @@ Acesse [o laboratório publicado](https://alldevitone-maker.github.io/api-lab-fa
 
 Este repositório também registra uma parte da evolução pública do projeto e do processo de construção com LLMs e IA.
 
+O diário público agora está na segunda etapa, documentando a passagem de experimentos isolados para uma arquitetura de trabalho mais organizada, rastreável e reproduzível.
+
 Leia o diário público: [Building with AI in Public](./BUILDING_WITH_AI.md)
 
 ## Desenvolvimento
