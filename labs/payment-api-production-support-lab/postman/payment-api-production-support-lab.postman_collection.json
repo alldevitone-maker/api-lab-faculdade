@@ -1,0 +1,20 @@
+{
+  "info": {
+    "name": "Payment API Production Support Lab",
+    "_postman_id": "7fa681f4-4dc4-42be-a6d0-4ca33f820001",
+    "description": "Synthetic collection for API and incident troubleshooting practice.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {"key": "baseUrl", "value": "http://localhost:8000"},
+    {"key": "customerId", "value": ""},
+    {"key": "paymentId", "value": ""}
+  ],
+  "item": [
+    {"name": "Health", "request": {"method": "GET", "header": [{"key": "X-Correlation-ID", "value": "postman-health-001"}], "url": "{{baseUrl}}/health"}},
+    {"name": "Create customer", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"external_id\": \"postman-customer-001\",\n  \"name\": \"Postman Customer\",\n  \"email\": \"postman@example.test\"\n}"}, "url": "{{baseUrl}}/api/v1/customers"}},
+    {"name": "Create payment", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"},{"key": "Idempotency-Key", "value": "postman-payment-key-0001"},{"key": "X-Correlation-ID", "value": "postman-payment-001"}], "body": {"mode": "raw", "raw": "{\n  \"customer_id\": \"{{customerId}}\",\n  \"merchant_reference\": \"postman-order-001\",\n  \"amount_cents\": 1999,\n  \"currency\": \"USD\"\n}"}, "url": "{{baseUrl}}/api/v1/payments"}},
+    {"name": "Approve payment webhook", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"event_id\": \"postman-event-approve-001\",\n  \"payment_id\": \"{{paymentId}}\",\n  \"status\": \"APPROVED\",\n  \"provider\": \"synthetic-gateway\"\n}"}, "url": "{{baseUrl}}/api/v1/webhooks/payment"}},
+    {"name": "Payment event timeline", "request": {"method": "GET", "url": "{{baseUrl}}/api/v1/payments/{{paymentId}}/events"}}
+  ]
+}

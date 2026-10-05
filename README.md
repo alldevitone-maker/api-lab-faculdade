@@ -4,6 +4,14 @@ Laboratório visual para aprender APIs HTTP. A versão exibida na página vem de
 
 Acesse [o laboratório publicado](https://alldevitone-maker.github.io/api-lab-faculdade/). A página funciona pelo link, sem instalar nada. O laboratório simula respostas em memória: não envia chamadas para a URL informada e não valida credenciais reais. Evite inserir tokens reais. A [versão anterior](https://alldevitone-maker.github.io/api-lab-faculdade/legacy.html) preserva as demais atividades originais durante a migração.
 
+## Payment API Production Support Lab
+
+Novo laboratório técnico focado em APIs, SQL, PostgreSQL, idempotência, webhooks, observabilidade e investigação de incidentes de pagamentos usando somente dados sintéticos.
+
+Acesse o projeto: [Payment API Production Support Lab](./labs/payment-api-production-support-lab/README.md)
+
+O lab inclui quatro incidentes reproduzíveis, runbook operacional, Postman, Docker, testes automatizados e queries de troubleshooting com `JOIN` e `EXPLAIN ANALYZE`.
+
 ## Building with AI in Public
 
 Este repositório também registra uma parte da evolução pública do projeto e do processo de construção com LLMs e IA.
