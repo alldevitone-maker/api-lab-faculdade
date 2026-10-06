@@ -352,6 +352,32 @@ function barHtml(label, value, colorClass) {
   `;
 }
 
+function allCandidates2026Html(row) {
+  const entries = CITY_2026.candidates
+    .map(candidate => ({
+      ...candidate,
+      localVotes: Number(row.candidateVotes?.[String(candidate.number)] ?? 0),
+      localShare: row.valid ? Number(row.candidateVotes?.[String(candidate.number)] ?? 0) / row.valid * 100 : 0
+    }))
+    .sort((a, b) => b.localVotes - a.localVotes);
+
+  return `
+    <details class="candidate-details">
+      <summary>Todos os 12 candidatos · 2026</summary>
+      <div class="candidate-list">
+        ${entries.map((candidate, index) => `
+          <div class="candidate-row">
+            <span class="candidate-rank">${index + 1}</span>
+            <span class="candidate-name">${candidate.name}<small>${candidate.number}</small></span>
+            <strong>${fmtInt(candidate.localVotes)}</strong>
+            <span class="candidate-share">${fmtPct(candidate.localShare)}</span>
+          </div>
+        `).join('')}
+      </div>
+    </details>
+  `;
+}
+
 function details2026(row) {
   if (!row) return '<div class="warning-note">Sem correspondência nominal segura com a localidade eleitoral de 2026.</div>';
   return `
@@ -367,6 +393,7 @@ function details2026(row) {
       <div class="detail-row"><span>Abstenção</span><strong>${fmtPct(row.abstentionPct)}</strong></div>
       <div class="detail-row"><span>Brancos / nulos</span><strong>${fmtInt(row.blank)} / ${fmtInt(row.nullVotes)}</strong></div>
     </div>
+    ${allCandidates2026Html(row)}
   `;
 }
 
