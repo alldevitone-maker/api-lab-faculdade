@@ -26,6 +26,22 @@ export const CITY_2026 = {
 };
 
 export const CITY_2022 = {
+  round: 2,
+  electorate: 122929,
+  turnout: 107048,
+  turnoutPct: 87.08,
+  valid: 104007,
+  blankAndNull: 3041,
+  abstention: 15881,
+  abstentionPct: 12.92,
+  candidates: [
+    { name: 'Jair Bolsonaro', number: 22, votes: 80164, share: 77.08 },
+    { name: 'Lula', number: 13, votes: 23843, share: 22.92 }
+  ]
+};
+
+export const CITY_2022_FIRST_ROUND = {
+  round: 1,
   electorate: 122958,
   turnout: 105810,
   valid: 102563,
@@ -38,12 +54,7 @@ export const CITY_2022 = {
     { name: 'Simone Tebet', number: 15, votes: 3901, share: 3.80 },
     { name: 'Ciro Gomes', number: 12, votes: 2007, share: 1.96 },
     { name: "Felipe D'Avila", number: 30, votes: 1812, share: 1.77 },
-    { name: 'Soraya Thronicke', number: 44, votes: 443, share: 0.43 },
-    { name: 'Padre Kelmon', number: 14, votes: 70, share: 0.07 },
-    { name: 'Sofia Manzano', number: 21, votes: 62, share: 0.06 },
-    { name: 'Léo Péricles', number: 80, votes: 33, share: 0.03 },
-    { name: 'Vera', number: 16, votes: 21, share: 0.02 },
-    { name: 'Constituinte Eymael', number: 27, votes: 15, share: 0.01 }
+    { name: 'Soraya Thronicke', number: 44, votes: 443, share: 0.43 }
   ]
 };
 
@@ -96,26 +107,25 @@ export const LOCAL_2026 = [
 // averaged arithmetically because location-level vote volumes are not published
 // in that summary.
 export const LOCAL_2022_PROXY = [
-  { name: 'BARRA DO RIO CERRO', blueShare: 74.5, observations: 1 },
-  { name: 'CENTRO', blueShare: 72.07, observations: 3 },
-  { name: 'RAU', blueShare: 69.45, observations: 2 },
-  { name: 'SÃO LUIS', blueShare: 70.7, observations: 1 },
-  { name: 'JARAGUÁ 99', blueShare: 69.4, observations: 1 },
-  { name: 'NOVA BRASILIA', blueShare: 71.7, observations: 1 },
-  { name: 'ILHA DA FIGUEIRA', blueShare: 70.75, observations: 2 },
-  { name: 'JOÃO PESSOA', blueShare: 71.6, observations: 1 },
-  { name: 'CZERNIEWICZ', blueShare: 71.4, observations: 1 },
-  { name: 'VILA LALAU', blueShare: 70.7, observations: 1 },
-  { name: 'TRÊS RIOS DO NORTE', blueShare: 68.4, observations: 1 }
+  { name: 'BARRA DO RIO CERRO', blueShare: 82.2, redShare: 17.8, observations: 1 },
+  { name: 'CENTRO', blueShare: 79.77, redShare: 20.23, observations: 3 },
+  { name: 'RAU', blueShare: 76.45, redShare: 23.55, observations: 2 },
+  { name: 'SÃO LUIS', blueShare: 77.0, redShare: 23.0, observations: 1 },
+  { name: 'JARAGUÁ 99', blueShare: 75.8, redShare: 24.2, observations: 1 },
+  { name: 'NOVA BRASILIA', blueShare: 79.0, redShare: 21.0, observations: 1 },
+  { name: 'ILHA DA FIGUEIRA', blueShare: 77.65, redShare: 22.35, observations: 2 },
+  { name: 'JOÃO PESSOA', blueShare: 77.6, redShare: 22.4, observations: 1 },
+  { name: 'CZERNIEWICZ', blueShare: 79.4, redShare: 20.6, observations: 1 },
+  { name: 'VILA LALAU', blueShare: 78.2, redShare: 21.8, observations: 1 },
+  { name: 'TRÊS RIOS DO NORTE', blueShare: 74.9, redShare: 25.1, observations: 1 }
 ].map(item => ({
   ...item,
-  redShare: null,
-  confidence: 'proxy-top15-local'
+  confidence: 'proxy-top15-local-2022-second-round'
 }));
 
 export const DATA_SOURCES = {
   report2026: 'Análise Presidencial 2026 — Jaraguá do Sul (384/384 boletins reconciliados com TSE)',
   ibgeNeighborhoods: 'IBGE — Censo Demográfico 2022, malha de bairros de Santa Catarina',
   ibgeMunicipality: 'IBGE — Malha Municipal 2024, Santa Catarina',
-  election2022: 'TSE Dados Abertos; resumo municipal e top-15 locais via NanoIris'
+  election2022: 'TSE Dados Abertos; resultado municipal oficial do 2º turno e top-15 locais geolocalizados via NanoIris'
 };
