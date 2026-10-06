@@ -12,7 +12,7 @@ test('atlas eleitoral carrega geografia oficial e dados TSE completos', async ({
   await search.fill('Centro');
   await page.getByRole('button', { name: 'CENTRO' }).click();
 
-  await expect(page.locator('#inspector-content h2')).toHaveText('CENTRO');
+  await expect(page.locator('#inspector-content h2')).toHaveText('Centro');
   await expect(page.getByText('Todos os 12 candidatos · 2026')).toBeVisible();
 
   await page.getByRole('button', { name: '2022' }).click();
