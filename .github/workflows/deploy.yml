@@ -25,6 +25,8 @@ jobs:
       - run: npm run lint
       - run: npm run test
       - run: npm run check:version
+      - run: node --check public/jaragua-atlas/app.js && node --check public/jaragua-atlas/data/elections.js
+      - run: python -m py_compile scripts/build-jaragua-geodata.py
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
