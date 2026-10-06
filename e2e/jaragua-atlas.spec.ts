@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test('atlas eleitoral carrega geografia oficial e dados TSE completos', async ({ page }) => {
-  await page.goto('/jaragua-atlas/index.html');
+  await page.goto('http://127.0.0.1:4174/jaragua-atlas/index.html');
 
   await expect(page.locator('#loading-state')).toHaveClass(/is-hidden/, { timeout: 45_000 });
   await expect(page.locator('#map canvas')).toHaveCount(1);
