@@ -1,4 +1,4 @@
-/* global maplibregl */
+import * as maplibregl from './vendor/maplibre-gl.mjs';
 import { CITY_2026, LOCAL_2026 } from './data/elections.js';
 
 const state = {
