@@ -4,6 +4,14 @@ Laboratório visual para aprender APIs HTTP. A versão exibida na página vem de
 
 Acesse [o laboratório publicado](https://alldevitone-maker.github.io/api-lab-faculdade/). A página funciona pelo link, sem instalar nada. O laboratório simula respostas em memória: não envia chamadas para a URL informada e não valida credenciais reais. Evite inserir tokens reais. A [versão anterior](https://alldevitone-maker.github.io/api-lab-faculdade/legacy.html) preserva as demais atividades originais durante a migração.
 
+## Atlas Eleitoral Tático · Jaraguá do Sul
+
+Novo laboratório geoespacial com um único mapa vetorial interativo de Jaraguá do Sul, camadas eleitorais 2026/2022, comparação temporal, busca por bairro e pipeline de geodados oficiais do IBGE.
+
+Acesse o atlas publicado: [Jaraguá Electoral Atlas](https://alldevitone-maker.github.io/api-lab-faculdade/jaragua-atlas/)
+
+Arquitetura, método e limitações: [documentação técnica](./labs/jaragua-electoral-atlas/README.md)
+
 ## Payment API Production Support Lab
 
 Novo laboratório técnico focado em APIs, SQL, PostgreSQL, idempotência, webhooks, observabilidade e investigação de incidentes de pagamentos usando somente dados sintéticos.
