@@ -18,10 +18,12 @@ public/jaragua-atlas/
 ├── styles.css              # responsive tactical UI
 ├── app.js                  # MapLibre rendering + interaction + analytics
 └── data/
-    └── elections.js        # audited electoral facts and explicit proxies
+    ├── elections.js                 # audited 2026 electoral facts
+    └── election-2022-local.json     # generated in CI from official TSE archives
 
 scripts/
-└── build-jaragua-geodata.py # authoritative IBGE shapefile → compact GeoJSON
+├── build-jaragua-geodata.py         # authoritative IBGE shapefile → compact GeoJSON
+└── build-jaragua-2022.py            # TSE BU + voting-place registry → locality aggregates
 
 .github/workflows/deploy.yml  # CI validates and generates geodata before Vite build
 ```
@@ -46,7 +48,10 @@ The GitHub Actions deployment:
 6. filters both by municipality code `4208906`
 7. validates geographic coordinate ranges and minimum neighborhood count
 8. writes compact `bairros.geojson`, `municipio.geojson` and provenance metadata
-9. performs the normal Vite build, browser tests and GitHub Pages deployment
+9. downloads the official 2022 TSE voting-place registry and SC Boletim de Urna archives for both rounds
+10. joins BU sections to TSE voting places, aggregates by `NM_BAIRRO`, and reconciles municipality totals exactly
+11. writes `election-2022-local.json` with locality, participation, vote-share and provenance data
+12. performs the normal Vite build, browser tests and GitHub Pages deployment
 
 A failed or suspicious geodata extraction fails the deployment instead of publishing a misleading map.
 
@@ -75,15 +80,39 @@ The web map currently exposes:
 
 ### 2022
 
-Municipality totals use the official final presidential round.
+The historical layer is generated directly from official TSE datasets.
 
-Local coloring is **not presented as complete neighborhood aggregation**. The first published version uses a transparent proxy derived from the top local voting places made available by NanoIris using TSE data. The UI marks this coverage explicitly.
+The CI pipeline processes:
 
-This limitation is intentional. Unknown values stay unknown instead of being imputed.
+- Santa Catarina Boletim de Urna for the 2022 first round
+- Santa Catarina Boletim de Urna for the 2022 second round
+- TSE `Eleitorado por local de votação - 2022`
+
+For Jaraguá do Sul, the pipeline currently reconciles:
+
+- 355 effective presidential sections in the first round
+- 35 TSE neighborhood/locality labels in the first round
+- 100% of effective sections linked to a TSE voting-place record
+- 102,563 valid first-round votes
+- 71,810 votes for Jair Bolsonaro (22)
+- 22,389 votes for Lula (13)
+
+The second round is also processed and reconciled exactly:
+
+- 355 effective presidential sections
+- 35 TSE neighborhood/locality labels
+- 100% section-to-location mapping
+- 104,007 valid votes
+- 80,164 votes for Jair Bolsonaro
+- 23,843 votes for Lula
+
+The map's **2022** mode uses the first round so the historical comparison with 2026 is stage-compatible. The final second-round result remains available in the neighborhood inspector.
+
+As in 2026, `NM_BAIRRO` describes the neighborhood of the polling place, not the voter's residential address.
 
 ### Consolidated
 
-The comparison layer only computes neighborhood change where both periods have local coverage.
+The comparison layer compares **first round 2022 ↔ first round 2026** and only computes neighborhood change where both periods have compatible locality-to-polygon coverage.
 
 It can show:
 
@@ -128,17 +157,17 @@ Mobile:
 - no invented neighborhood values
 - official geometry is preferred over hand-drawn polygons
 - source provenance ships with the deployment
-- all uncertain local historical data is marked as proxy
+- 2022 locality values come from full TSE BU ingestion, not a top-location proxy
+- both 2022 rounds are reconciled exactly against municipal TSE totals
 - election stages are labeled explicitly
 - map color is a descriptive encoding, not a recommendation or forecast
 - causal claims about demographics and voting are intentionally excluded
 
 ## Next enterprise milestones
 
-1. replace the 2022 proxy with a complete section-level TSE ingestion
-2. geocode every voting place and build a spatial crosswalk
-3. add 2026 minor-candidate local distributions
-4. integrate Censo 2022 sector variables only at compatible spatial resolution
-5. add exportable comparison tables and permalinks for selected neighborhoods
-6. add visual regression tests for desktop and mobile
-7. move the atlas to a dedicated repository/domain when the prototype stabilizes
+1. replace nominal locality-to-polygon matching with a coordinate-based spatial crosswalk where the TSE coordinates are reliable
+2. add 2026 minor-candidate local distributions to the interactive inspector
+3. integrate Censo 2022 sector variables only at compatible spatial resolution
+4. add exportable comparison tables and permalinks for selected neighborhoods
+5. add visual regression tests for desktop and mobile
+6. move the atlas to a dedicated repository/domain when the prototype stabilizes
