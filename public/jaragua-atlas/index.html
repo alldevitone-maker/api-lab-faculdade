@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Atlas eleitoral tático de Jaraguá do Sul com análise por bairro, comparação 2022–2026 e dados territoriais auditáveis." />
+  <meta name="theme-color" content="#071018" />
+  <title>Atlas Eleitoral Tático · Jaraguá do Sul</title>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin />
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@6.12.0/dist/maplibre-gl.css" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="control-rail" aria-label="Controles do atlas">
+      <div class="brand-block">
+        <span class="brand-kicker">JARAGUÁ DO SUL · SC</span>
+        <h1>Atlas Eleitoral Tático</h1>
+        <p>Leitura territorial, comparativa e auditável das eleições presidenciais.</p>
+      </div>
+
+      <div class="mode-group" aria-label="Selecionar período">
+        <button class="mode-btn is-active" data-mode="2026">2026</button>
+        <button class="mode-btn" data-mode="2022">2022</button>
+        <button class="mode-btn" data-mode="consolidated">Consolidado</button>
+      </div>
+
+      <section class="panel-section">
+        <div class="section-head">
+          <h2>Métrica</h2>
+          <span id="metric-status" class="micro-status">2026</span>
+        </div>
+        <div class="metric-grid">
+          <button class="metric-btn is-active" data-metric="blue">Campo 22</button>
+          <button class="metric-btn" data-metric="red">Lula 13</button>
+          <button class="metric-btn" data-metric="margin">Margem</button>
+          <button class="metric-btn" data-metric="abstention">Abstenção</button>
+        </div>
+      </section>
+
+      <section class="panel-section">
+        <div class="section-head">
+          <h2>Resumo municipal</h2>
+          <span class="source-badge">TSE</span>
+        </div>
+        <div class="kpi-grid">
+          <article class="kpi">
+            <span>Votos válidos</span>
+            <strong id="kpi-valid">—</strong>
+          </article>
+          <article class="kpi">
+            <span>Comparecimento</span>
+            <strong id="kpi-turnout">—</strong>
+          </article>
+          <article class="kpi">
+            <span>Campo 22</span>
+            <strong id="kpi-blue">—</strong>
+          </article>
+          <article class="kpi">
+            <span>Lula 13</span>
+            <strong id="kpi-red">—</strong>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel-section">
+        <div class="section-head">
+          <h2>Legenda</h2>
+          <button id="reset-map" class="text-button">Centralizar</button>
+        </div>
+        <div id="legend" class="legend"></div>
+      </section>
+
+      <section class="panel-section methodology-card">
+        <span class="eyebrow">QUALIDADE DOS DADOS</span>
+        <p id="coverage-copy">Carregando geografia oficial…</p>
+        <button id="open-methodology" class="secondary-button">Metodologia e fontes</button>
+      </section>
+    </aside>
+
+    <main class="map-stage">
+      <header class="map-toolbar">
+        <div class="search-wrap">
+          <label class="sr-only" for="neighborhood-search">Buscar bairro</label>
+          <input id="neighborhood-search" type="search" placeholder="Buscar bairro…" autocomplete="off" />
+          <div id="search-results" class="search-results" hidden></div>
+        </div>
+        <div class="toolbar-actions">
+          <button id="toggle-labels" class="icon-button" aria-pressed="true" title="Mostrar ou ocultar nomes">Aa</button>
+          <button id="toggle-theme" class="icon-button" title="Alternar tema">◐</button>
+        </div>
+      </header>
+
+      <div id="map" class="map-canvas" aria-label="Mapa vetorial interativo de Jaraguá do Sul"></div>
+
+      <div class="map-hud">
+        <div class="hud-pill"><span class="pulse-dot"></span><span id="hud-mode">2026 · Campo 22</span></div>
+        <div class="hud-pill secondary"><span id="hud-source">IBGE + TSE</span></div>
+      </div>
+
+      <div id="loading-state" class="loading-state" role="status" aria-live="polite">
+        <div class="loader-ring"></div>
+        <div>
+          <strong>Montando o atlas vetorial</strong>
+          <span>Carregando malhas oficiais e vinculando dados eleitorais…</span>
+        </div>
+      </div>
+
+      <section class="inspector" id="inspector" aria-live="polite">
+        <div class="inspector-empty" id="inspector-empty">
+          <span class="eyebrow">EXPLORAR</span>
+          <h2>Selecione um bairro</h2>
+          <p>Toque ou clique em uma área do mapa para abrir a ficha territorial.</p>
+        </div>
+        <div id="inspector-content" hidden></div>
+      </section>
+
+      <div class="mobile-hint">Arraste para mover · pinça para zoom · toque para analisar</div>
+    </main>
+  </div>
+
+  <dialog id="methodology-dialog" class="methodology-dialog">
+    <form method="dialog">
+      <button class="dialog-close" aria-label="Fechar">×</button>
+    </form>
+    <span class="eyebrow">METODOLOGIA</span>
+    <h2>Como ler este mapa</h2>
+    <p>O mapa usa geometrias vetoriais oficiais e mantém a diferença entre bairro geográfico e localidade eleitoral. Os dados de 2026 são agregados pelo nome da localidade do cadastro do TSE; o vínculo com o bairro é nominal e auditável.</p>
+    <div class="methodology-grid">
+      <article>
+        <h3>2026</h3>
+        <p>384 de 384 boletins reconciliados com o resultado municipal. A camada mostra participação, margem, abstenção e intensidade relativa por localidade.</p>
+      </article>
+      <article>
+        <h3>2022</h3>
+        <p>O total municipal é oficial. A camada local inicial usa apenas a amostra publicada dos maiores locais de votação e é identificada como proxy, nunca como agregado completo de bairro.</p>
+      </article>
+      <article>
+        <h3>Consolidado</h3>
+        <p>Compara apenas áreas com observação nos dois anos. O indicador principal é a mudança da diferença entre Campo 22 e Lula, evitando tratar candidatos distintos como a mesma pessoa.</p>
+      </article>
+      <article>
+        <h3>Geografia</h3>
+        <p>Malha de bairros do Censo 2022 e limite municipal do IBGE. A pipeline de build valida código municipal, quantidade mínima de feições e coordenadas geográficas.</p>
+      </article>
+    </div>
+    <p class="fine-print">Este produto descreve resultados eleitorais e território. Não infere intenção individual, causalidade ou preferência de moradores a partir da localização das urnas.</p>
+  </dialog>
+
+  <noscript>Este atlas precisa de JavaScript para renderizar o mapa vetorial.</noscript>
+  <script src="https://unpkg.com/maplibre-gl@6.12.0/dist/maplibre-gl.js"></script>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
