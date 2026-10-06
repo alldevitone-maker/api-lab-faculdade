@@ -61,14 +61,25 @@ def normalize_value(value) -> str:
 
 
 def record_matches_municipality(props: dict) -> bool:
-    for key, value in props.items():
-        text = normalize_value(value)
-        key_upper = key.upper()
-        if text == TARGET_MUNICIPALITY:
-            return True
-        if "CD_MUN" in key_upper and text.startswith(TARGET_MUNICIPALITY):
-            return True
-    return False
+    # Prefer explicit municipality-code fields. Looking for the raw value across
+    # every attribute can create false positives when another numeric field
+    # happens to equal the IBGE municipality code.
+    code_fields = [
+        (key, value)
+        for key, value in props.items()
+        if key.upper() == "CD_MUN" or key.upper().startswith("CD_MUN")
+    ]
+    if code_fields:
+        return any(
+            normalize_value(value).startswith(TARGET_MUNICIPALITY)
+            for _, value in code_fields
+        )
+
+    # Defensive fallback for schema variants that omit the canonical field name.
+    return any(
+        normalize_value(value) == TARGET_MUNICIPALITY
+        for value in props.values()
+    )
 
 
 def pick_name(props: dict) -> str:
