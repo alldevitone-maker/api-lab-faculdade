@@ -1,3 +1,4 @@
+/* global maplibregl */
 import { CITY_2026, CITY_2022, LOCAL_2026, LOCAL_2022_PROXY } from './data/elections.js';
 
 const state = {
