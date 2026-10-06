@@ -29,7 +29,7 @@ jobs:
         run: |
           npm install --no-save --package-lock=false maplibre-gl@6.12.0
           mkdir -p public/jaragua-atlas/vendor
-          cp node_modules/maplibre-gl/dist/maplibre-gl.js public/jaragua-atlas/vendor/maplibre-gl.js
+          cp node_modules/maplibre-gl/dist/maplibre-gl.mjs public/jaragua-atlas/vendor/maplibre-gl.mjs
           cp node_modules/maplibre-gl/dist/maplibre-gl.css public/jaragua-atlas/vendor/maplibre-gl.css
       - run: node --check public/jaragua-atlas/app.js && node --check public/jaragua-atlas/data/elections.js
       - run: python -m py_compile scripts/build-jaragua-geodata.py scripts/build-jaragua-2022.py
