@@ -7,7 +7,7 @@
   <meta name="theme-color" content="#071018" />
   <title>Atlas Eleitoral Tático · Jaraguá do Sul</title>
   <link rel="preconnect" href="https://unpkg.com" crossorigin />
-  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@6.12.0/dist/maplibre-gl.css" />
+  <link rel="stylesheet" href="./vendor/maplibre-gl.css" />
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
@@ -31,9 +31,9 @@
           <span id="metric-status" class="micro-status">2026</span>
         </div>
         <div class="metric-grid">
-          <button class="metric-btn is-active" data-metric="blue">Campo 22</button>
+          <button class="metric-btn" data-metric="blue">Campo 22</button>
           <button class="metric-btn" data-metric="red">Lula 13</button>
-          <button class="metric-btn" data-metric="margin">Margem</button>
+          <button class="metric-btn is-active" data-metric="margin">Disputa 22×13</button>
           <button class="metric-btn" data-metric="abstention">Abstenção</button>
         </div>
       </section>
@@ -85,7 +85,8 @@
           <input id="neighborhood-search" type="search" placeholder="Buscar bairro…" autocomplete="off" />
           <div id="search-results" class="search-results" hidden></div>
         </div>
-        <div class="toolbar-actions">\n          <button id="toggle-controls" class="icon-button mobile-only" title="Abrir filtros">☰</button>
+        <div class="toolbar-actions">
+          <button id="toggle-controls" class="icon-button mobile-only" title="Abrir filtros">☰</button>
           <button id="toggle-labels" class="icon-button" aria-pressed="true" title="Mostrar ou ocultar nomes">Aa</button>
           <button id="toggle-theme" class="icon-button" title="Alternar tema">◐</button>
         </div>
@@ -125,7 +126,7 @@
     </form>
     <span class="eyebrow">METODOLOGIA</span>
     <h2>Como ler este mapa</h2>
-    <p>O mapa usa geometrias vetoriais oficiais e mantém a diferença entre bairro geográfico e localidade eleitoral. Os dados de 2026 são agregados pelo nome da localidade do cadastro do TSE; o vínculo com o bairro é nominal e auditável.</p>
+    <p>O mapa usa geometrias vetoriais oficiais e mantém a diferença entre bairro geográfico e localidade eleitoral. Em 2022 e 2026, o “bairro” eleitoral descreve o bairro/localidade do local de votação do TSE, não o endereço residencial do eleitor; o vínculo com o polígono IBGE é nominal e auditável.</p>
     <div class="methodology-grid">
       <article>
         <h3>2026</h3>
@@ -133,11 +134,11 @@
       </article>
       <article>
         <h3>2022</h3>
-        <p>O total municipal é oficial. A camada local inicial usa apenas a amostra publicada dos maiores locais de votação e é identificada como proxy, nunca como agregado completo de bairro.</p>
+        <p>O 1º e o 2º turnos são processados diretamente dos Boletins de Urna de Santa Catarina e do cadastro TSE de locais de votação. A camada principal de 2022 usa o 1º turno para comparação metodologicamente equivalente com 2026; o resultado final do 2º turno aparece na ficha do bairro.</p>
       </article>
       <article>
         <h3>Consolidado</h3>
-        <p>Compara apenas áreas com observação nos dois anos. O indicador principal é a mudança da diferença entre Campo 22 e Lula, evitando tratar candidatos distintos como a mesma pessoa.</p>
+        <p>Compara 1º turno de 2022 com 1º turno de 2026. Mostra variação de share do Campo 22, share de Lula, margem 22−13 e abstenção, sem tratar candidatos distintos como a mesma pessoa.</p>
       </article>
       <article>
         <h3>Geografia</h3>
@@ -148,7 +149,6 @@
   </dialog>
 
   <noscript>Este atlas precisa de JavaScript para renderizar o mapa vetorial.</noscript>
-  <script src="https://unpkg.com/maplibre-gl@6.12.0/dist/maplibre-gl.js"></script>
   <script type="module" src="./app.js"></script>
 </body>
 </html>
